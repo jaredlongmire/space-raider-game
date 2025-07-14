@@ -33,6 +33,21 @@ collectible_img = pygame.transform.scale(collectible_img_raw, (40, 40))  # adjus
 background_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "space_bg.png"))
 background_img = pygame.transform.scale(background_img_raw, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+# Load collectible item
+item_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "item.png"))
+item_img = pygame.transform.scale(item_img_raw, (40, 40))
+
+NUM_ITEMS = 3
+item_rects = []
+
+for _ in range(NUM_ITEMS):
+    rect = item_img.get_rect()
+    rect.topleft = (
+        random.randint(0, SCREEN_WIDTH - 32),
+        random.randint(0, SCREEN_HEIGHT - 32)
+    )
+    item_rects.append(rect)
+
 # Get rects for collision/movement
 player_rect = player_img.get_rect()
 player_rect.topleft = (50, 50)
@@ -170,11 +185,24 @@ while running:
             )
             if health <= 0:
                 game_over = True
+
+    # Add Collision Detection for Items
+    for item_rect in item_rects:
+        if player_rect.colliderect(item_rect):
+            score += 1
+            item_rect.topleft = (
+                random.randint(0, SCREEN_WIDTH - 32),
+                random.randint(0, SCREEN_HEIGHT - 32)
+            )
             
     # Draw everything
     screen.blit(player_img, player_rect)
     for rect in collectible_rects:
         screen.blit(collectible_img, rect)
+
+    # Draw collectibles
+    for item_rect in item_rects:
+        screen.blit(item_img, item_rect)
 
     # Draw score
     score_text = font.render(f"Score: {score}", True, (255, 255, 255))
