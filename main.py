@@ -52,6 +52,13 @@ for _ in range(NUM_ASTEROIDS):
 score = 0
 font = pygame.font.SysFont(None, 36)
 
+#Health
+health = 3
+
+#Game Over
+game_over = False
+game_over_font = pygame.font.SysFont(None, 64)
+
 # Main game loop
 running = True
 clock = pygame.time.Clock()
@@ -63,11 +70,23 @@ while running:
         title_font = pygame.font.SysFont(None, 72)
         subtitle_font = pygame.font.SysFont(None, 36)
 
-        title_text = title_font.render("SPACE RAIDER", True, (255, 255, 255))
-        subtitle_text = subtitle_font.render("Press any key to begin", True, (180, 180, 180))
+        # Glowing title with shadow
+        shadow_offset = 4
+        title_shadow = title_font.render("SPACE RAIDER", True, (0, 0, 0))
+        screen.blit(title_shadow, (SCREEN_WIDTH//2 - title_shadow.get_width()//2 + shadow_offset,
+                                   180 + shadow_offset))
 
+        title_text = title_font.render("SPACE RAIDER", True, (0, 255, 255))  # Neon cyan
         screen.blit(title_text, (SCREEN_WIDTH//2 - title_text.get_width()//2, 180))
-        screen.blit(subtitle_text, (SCREEN_WIDTH//2 - subtitle_text.get_width()//2, 260))
+
+        # Blinking subtitle
+        import time
+        if int(time.time() * 2) % 2 == 0:
+            subtitle_text = subtitle_font.render("Press any key to begin", True, (200, 200, 200))
+            screen.blit(subtitle_text, (SCREEN_WIDTH//2 - subtitle_text.get_width()//2, 260))
+
+        # Optional: Show astronaut sprite
+        screen.blit(player_img, (SCREEN_WIDTH//2 - player_img.get_width()//2, 330))
 
         pygame.display.flip()
 
@@ -79,6 +98,32 @@ while running:
 
         pygame.display.flip()        
         continue  # Skip rest of game logic until title is dismissed
+
+    if game_over:
+        screen.blit(background_img, (0, 0))
+        over_text = game_over_font.render("GAME OVER", True, (255, 0, 0))
+        restart_text = font.render("Press R to Restart", True, (255, 255, 255))
+
+        screen.blit(over_text, (SCREEN_WIDTH//2 - over_text.get_width()//2, 180))
+        screen.blit(restart_text, (SCREEN_WIDTH//2 - restart_text.get_width()//2, 260))
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                # Reset game
+                score = 0
+                health = 3
+                game_over = False
+                player_rect.topleft = (50, 50)
+                for rect in collectible_rects:
+                    rect.topleft = (
+                        random.randint(0, SCREEN_WIDTH - 32),
+                        0
+                    )
+        continue
         
     # handles window close in game mode
     for event in pygame.event.get():
@@ -111,12 +156,20 @@ while running:
 
     # Collision detection
     for rect in collectible_rects:
+        rect.y += 3  # Asteroids fall
+
+        if rect.y > SCREEN_HEIGHT:
+            rect.y = 0
+            rect.x = random.randint(0, SCREEN_WIDTH - 32)
+
         if player_rect.colliderect(rect):
-            score += 1
+            health -= 1
             rect.topleft = (
                 random.randint(0, SCREEN_WIDTH - 32),
-                random.randint(0, SCREEN_HEIGHT - 32)
-        )
+                0
+            )
+            if health <= 0:
+                game_over = True
             
     # Draw everything
     screen.blit(player_img, player_rect)
