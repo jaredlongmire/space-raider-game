@@ -51,7 +51,7 @@ item_rects = []
 
 # Timer
 start_time = pygame.time.get_ticks()
-game_duration = 180000  # 3 minutes in milliseconds
+game_duration = 120000  # 2 minutes in milliseconds
 
 for _ in range(NUM_ITEMS):
     rect = item_img.get_rect()
