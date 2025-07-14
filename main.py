@@ -35,10 +35,14 @@ background_img = pygame.transform.scale(background_img_raw, (SCREEN_WIDTH, SCREE
 
 # Load collectible item
 item_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "item.png"))
-item_img = pygame.transform.scale(item_img_raw, (40, 40))
+item_img = pygame.transform.scale(item_img_raw, (50, 50))
 
 NUM_ITEMS = 3
 item_rects = []
+
+# Timer
+start_time = pygame.time.get_ticks()
+game_duration = 180000  # 3 minutes in milliseconds
 
 for _ in range(NUM_ITEMS):
     rect = item_img.get_rect()
@@ -208,7 +212,23 @@ while running:
     score_text = font.render(f"Score: {score}", True, (255, 255, 255))
     screen.blit(score_text, (10, 10))
 
+    # Timer
+    elapsed_time = pygame.time.get_ticks() - start_time
+    time_left = max(0, game_duration - elapsed_time)
+    minutes = time_left // 60000
+    seconds = (time_left % 60000) // 1000
+    timer_text = font.render(f"Time: {minutes}:{seconds:02}", True, (255, 255, 255))
+    screen.blit(timer_text, (SCREEN_WIDTH - 160, 10))
+
+    # Health
+    health_text = font.render(f"Hits Left: {health}", True, (255, 0, 0))
+    screen.blit(health_text, (SCREEN_WIDTH - 160, 40))
+
     pygame.display.flip()
     clock.tick(60)
+
+    # Game over on timer end
+    if time_left <= 0 or health <= 0:
+        game_over = True
 
 pygame.quit()
