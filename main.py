@@ -28,6 +28,10 @@ player_img = pygame.transform.scale(player_img_raw, (70, 70))  # Resize player 1
 collectible_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "collectible.png"))
 collectible_img = pygame.transform.scale(collectible_img_raw, (40, 40))  # adjust size as needed
 
+background_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "space_bg.png"))
+background_img = pygame.transform.scale(background_img_raw, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
 
 # Get rects for collision/movement
 player_rect = player_img.get_rect()
@@ -53,7 +57,8 @@ running = True
 clock = pygame.time.Clock()
 
 while running:
-    screen.fill((0, 0, 0))  # Fill screen with black
+    #screen.fill((0, 0, 0))  # Fill screen with black
+    screen.blit(background_img, (0, 0))
 
     # Event handling
     for event in pygame.event.get():
