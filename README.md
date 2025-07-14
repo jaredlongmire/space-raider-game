@@ -26,7 +26,7 @@ Sprites created using AI-generated placeholder pixel art.
 ## Roadmap
 - Sound effects
 - Background music
-- Enemies
+- Obstacles (i.e asteroids)
 - Title/Game Over screens
 
 ## License
