@@ -19,6 +19,8 @@ PLAYER_SPEED = 5
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Space Raider")
 
+show_title = True
+
 # collect sound halfway prod. by Jared Longmire
 
 # Load assets
@@ -30,8 +32,6 @@ collectible_img = pygame.transform.scale(collectible_img_raw, (40, 40))  # adjus
 
 background_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "space_bg.png"))
 background_img = pygame.transform.scale(background_img_raw, (SCREEN_WIDTH, SCREEN_HEIGHT))
-
-
 
 # Get rects for collision/movement
 player_rect = player_img.get_rect()
@@ -57,13 +57,36 @@ running = True
 clock = pygame.time.Clock()
 
 while running:
-    #screen.fill((0, 0, 0))  # Fill screen with black
-    screen.blit(background_img, (0, 0))
+    if show_title:
+        screen.blit(background_img, (0, 0))  # or screen.fill((0, 0, 0))
 
-    # Event handling
+        title_font = pygame.font.SysFont(None, 72)
+        subtitle_font = pygame.font.SysFont(None, 36)
+
+        title_text = title_font.render("SPACE RAIDER", True, (255, 255, 255))
+        subtitle_text = subtitle_font.render("Press any key to begin", True, (180, 180, 180))
+
+        screen.blit(title_text, (SCREEN_WIDTH//2 - title_text.get_width()//2, 180))
+        screen.blit(subtitle_text, (SCREEN_WIDTH//2 - subtitle_text.get_width()//2, 260))
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                show_title = False  # Exit title screen
+
+        pygame.display.flip()        
+        continue  # Skip rest of game logic until title is dismissed
+        
+    # handles window close in game mode
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    # --- Normal game logic starts here ---
+    screen.blit(background_img, (0, 0))
 
     # Movement
     keys = pygame.key.get_pressed()
