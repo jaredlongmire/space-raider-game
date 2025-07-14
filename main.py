@@ -10,6 +10,10 @@ pygame.mixer.init()
 pygame.mixer.music.load("assets/sounds/Halfway.mp3") # theme music halfway prod. by Jared Longmire
 pygame.mixer.music.play(-1)  # Loop forever
 
+# Sounds Effects
+collect_sound = pygame.mixer.Sound("assets/sounds/collect.wav")
+hit_sound = pygame.mixer.Sound("assets/sounds/hit.wav")
+
 # Constants
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
@@ -56,7 +60,7 @@ for _ in range(NUM_ITEMS):
 player_rect = player_img.get_rect()
 player_rect.topleft = (50, 50)
 
-NUM_ASTEROIDS = 5  # or however many you want
+NUM_ASTEROIDS = 4  # or however many you want
 collectible_rects = []
 
 for _ in range(NUM_ASTEROIDS):
@@ -121,10 +125,12 @@ while running:
     if game_over:
         screen.blit(background_img, (0, 0))
         over_text = game_over_font.render("GAME OVER", True, (255, 0, 0))
-        restart_text = font.render("Press R to Restart", True, (255, 255, 255))
+        final_score = font.render(f"Final Score: {score}", True, (255, 255, 255))
+        restart_text = font.render("Press R to Restart", True, (200, 200, 200))
 
-        screen.blit(over_text, (SCREEN_WIDTH//2 - over_text.get_width()//2, 180))
-        screen.blit(restart_text, (SCREEN_WIDTH//2 - restart_text.get_width()//2, 260))
+        screen.blit(over_text, (SCREEN_WIDTH//2 - over_text.get_width()//2, 160))
+        screen.blit(final_score, (SCREEN_WIDTH//2 - final_score.get_width()//2, 220))
+        screen.blit(restart_text, (SCREEN_WIDTH//2 - restart_text.get_width()//2, 280))
 
         pygame.display.flip()
 
@@ -183,6 +189,7 @@ while running:
 
         if player_rect.colliderect(rect):
             health -= 1
+            hit_sound.play()
             rect.topleft = (
                 random.randint(0, SCREEN_WIDTH - 32),
                 0
@@ -194,6 +201,7 @@ while running:
     for item_rect in item_rects:
         if player_rect.colliderect(item_rect):
             score += 1
+            collect_sound.play()
             item_rect.topleft = (
                 random.randint(0, SCREEN_WIDTH - 32),
                 random.randint(0, SCREEN_HEIGHT - 32)
@@ -220,9 +228,24 @@ while running:
     timer_text = font.render(f"Time: {minutes}:{seconds:02}", True, (255, 255, 255))
     screen.blit(timer_text, (SCREEN_WIDTH - 160, 10))
 
-    # Health
-    health_text = font.render(f"Hits Left: {health}", True, (255, 0, 0))
-    screen.blit(health_text, (SCREEN_WIDTH - 160, 40))
+    # Health Text you can use unstead of health bar
+    #health_text = font.render(f"Hits Left: {health}", True, (255, 0, 0))
+    #screen.blit(health_text, (SCREEN_WIDTH - 160, 40))
+
+    # Health Bar
+    bar_x = SCREEN_WIDTH - 160
+    bar_y = 40
+    bar_width = 100
+    bar_height = 20
+    bar_border_color = (255, 255, 255)
+    bar_fill_color = (255, 0, 0)
+
+    # Draw border
+    pygame.draw.rect(screen, bar_border_color, (bar_x, bar_y, bar_width, bar_height), 2)
+
+    # Draw filled portion (proportional to health)
+    fill_width = int((health / 3) * (bar_width - 4))
+    pygame.draw.rect(screen, bar_fill_color, (bar_x + 2, bar_y + 2, fill_width, bar_height - 4))
 
     pygame.display.flip()
     clock.tick(60)
