@@ -5,6 +5,11 @@ import os
 # Initialize Pygame
 pygame.init()
 
+# Initialize sound
+pygame.mixer.init()
+pygame.mixer.music.load("assets/sounds/Halfway.mp3") # theme music halfway prod. by Jared Longmire
+pygame.mixer.music.play(-1)  # Loop forever
+
 # Constants
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
@@ -13,6 +18,8 @@ PLAYER_SPEED = 5
 # Set up the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Space Raider")
+
+# collect sound halfway prod. by Jared Longmire
 
 # Load assets
 ASSETS_DIR = "assets"
