@@ -29,8 +29,13 @@ show_title = True
 
 # Load assets
 ASSETS_DIR = "assets"
-player_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "player.png"))
-player_img = pygame.transform.scale(player_img_raw, (70, 70))  # Resize player 100 x 100
+# Player directional images
+player_img_right_raw = pygame.image.load(os.path.join(ASSETS_DIR, "player_right.png"))
+player_img_left_raw = pygame.image.load(os.path.join(ASSETS_DIR, "player_left.png"))
+player_img_right = pygame.transform.scale(player_img_right_raw, (60, 60)) # Resize player default: 60 x 60
+player_img_left = pygame.transform.scale(player_img_left_raw, (60, 60))
+player_img = player_img_right 
+
 collectible_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "collectible.png"))
 collectible_img = pygame.transform.scale(collectible_img_raw, (40, 40))  # adjust size as needed
 
@@ -126,7 +131,7 @@ while running:
         screen.blit(background_img, (0, 0))
         over_text = game_over_font.render("GAME OVER", True, (255, 0, 0))
         final_score = font.render(f"Final Score: {score}", True, (255, 255, 255))
-        restart_text = font.render("Press R to Restart", True, (200, 200, 200))
+        restart_text = font.render("Press Any Key to Restart", True, (200, 200, 200))
 
         screen.blit(over_text, (SCREEN_WIDTH//2 - over_text.get_width()//2, 160))
         screen.blit(final_score, (SCREEN_WIDTH//2 - final_score.get_width()//2, 220))
@@ -137,7 +142,7 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+            elif event.type == pygame.KEYDOWN:
                 # Reset game
                 score = 0
                 health = 3
@@ -162,8 +167,10 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         player_rect.x -= PLAYER_SPEED
+        player_img = player_img_left
     if keys[pygame.K_RIGHT]:
         player_rect.x += PLAYER_SPEED
+        player_img = player_img_right
     if keys[pygame.K_UP]:
         player_rect.y -= PLAYER_SPEED
     if keys[pygame.K_DOWN]:
