@@ -6,7 +6,7 @@ This is a simple 16-bit-style top-down game made with Python and Pygame. You pla
 
 ## Features
 - Arrow key movement
-- Multiple asteroid collectibles
+- Asteroid collectibles
 - Retro pixel art visuals
 - Score counter
 - Scalable assets
@@ -31,4 +31,4 @@ Sprites created using AI-generated placeholder pixel art.
 
 ## License
 This project is open source under the MIT License. See [LICENSE](LICENSE) for details.
-" > README.md
+
