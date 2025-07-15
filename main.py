@@ -8,6 +8,7 @@ pygame.init()
 # Initialize sound
 pygame.mixer.init()
 pygame.mixer.music.load("assets/sounds/Halfway.mp3") # theme music halfway prod. by Jared Longmire
+pygame.mixer.music.set_volume(0.4)  # Volume range: 0.0 (mute) to 1.0 (full volume)
 pygame.mixer.music.play(-1)  # Loop forever
 
 # Sounds Effects
