@@ -4,8 +4,16 @@ import os
 import sys
 
 def resource_path(relative_path):
-    """Get absolute path to resource using Platypus-compatible method."""
-    base_path = os.path.abspath(os.path.dirname(__file__))
+    """Get absolute path to resource, works for dev and for Platypus .app"""
+    try:
+        base_path = sys._MEIPASS  # For PyInstaller
+    except AttributeError:
+        if getattr(sys, 'frozen', False):
+            # When using Platypus, sys.executable points to the .app executable
+            base_path = os.path.dirname(sys.executable)
+        else:
+            # When running normally
+            base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, relative_path)
 
 # Initialize Pygame
@@ -13,7 +21,7 @@ pygame.init()
 
 # Initialize sound
 pygame.mixer.init()
-pygame.mixer.music.load(resource_path("Halfway.mp3"))
+pygame.mixer.music.load(resource_path("assets/sounds/Halfway.mp3"))
 #pygame.mixer.music.load("assets/sounds/Halfway.mp3") # theme music halfway prod. by Jared Longmire
 pygame.mixer.music.set_volume(0.4)  # Volume range: 0.0 (mute) to 1.0 (full volume)
 pygame.mixer.music.play(-1)  # Loop forever
@@ -21,8 +29,8 @@ pygame.mixer.music.play(-1)  # Loop forever
 # Sounds Effects
 #collect_sound = pygame.mixer.Sound("assets/sounds/collect.wav")
 #hit_sound = pygame.mixer.Sound("assets/sounds/hit.wav")
-collect_sound = pygame.mixer.Sound(resource_path("collect.wav"))
-hit_sound = pygame.mixer.Sound(resource_path("hit.wav"))
+collect_sound = pygame.mixer.Sound(resource_path("assets/sounds/collect.wav"))
+hit_sound = pygame.mixer.Sound(resource_path("assets/sounds/hit.wav"))
 
 # Constants
 SCREEN_WIDTH = 640
@@ -42,23 +50,23 @@ ASSETS_DIR = "assets"
 # Player directional images
 #player_img_right_raw = pygame.image.load(os.path.join(ASSETS_DIR, "player_right.png"))
 #player_img_left_raw = pygame.image.load(os.path.join(ASSETS_DIR, "player_left.png"))
-player_img_right_raw = pygame.image.load(resource_path("player_right.png"))
-player_img_left_raw = pygame.image.load(resource_path("player_left.png"))
+player_img_right_raw = pygame.image.load(resource_path("assets/player_right.png"))
+player_img_left_raw = pygame.image.load(resource_path("assets/player_left.png"))
 player_img_right = pygame.transform.scale(player_img_right_raw, (60, 60)) # Resize player default: 60 x 60
 player_img_left = pygame.transform.scale(player_img_left_raw, (60, 60))
 player_img = player_img_right 
 
 #collectible_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "collectible.png"))
-collectible_img_raw = pygame.image.load(resource_path("collectible.png"))
+collectible_img_raw = pygame.image.load(resource_path("assets/collectible.png"))
 collectible_img = pygame.transform.scale(collectible_img_raw, (40, 40))  # adjust size as needed
 
 #background_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "space_bg.png"))
-background_img_raw = pygame.image.load(resource_path("space_bg.png"))
+background_img_raw = pygame.image.load(resource_path("assets/space_bg.png"))
 background_img = pygame.transform.scale(background_img_raw, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Load collectible item
 #item_img_raw = pygame.image.load(os.path.join(ASSETS_DIR, "item.png"))
-item_img_raw = pygame.image.load(resource_path("item.png"))
+item_img_raw = pygame.image.load(resource_path("assets/item.png"))
 item_img = pygame.transform.scale(item_img_raw, (50, 50))
 
 NUM_ITEMS = 3
