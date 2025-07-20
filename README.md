@@ -1,6 +1,6 @@
 # space-raider-game
 
-echo "# Space Raider Game 🚀
+Space Raider Game 🚀 [MacOS]
 
 This is a simple 16-bit-style top-down game made with Python and Pygame. You play as an astronaut collecting asteroids while avoiding going off-screen. Built for learning and fun!
 
