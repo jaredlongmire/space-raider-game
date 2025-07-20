@@ -1,0 +1,3 @@
+([('space_raider',
+   '/Users/jaredlongmire/space_raider/dist/space_raider',
+   'EXECUTABLE')],)
