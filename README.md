@@ -17,7 +17,7 @@ This is a simple 16-bit-style top-down game made with Python and Pygame. You pla
 
 ## Run the Game
 \`\`\`terminal
-python space_raider.py or open dist folder & click the space_raider exc
+python space_raider.py or open dist folder -> click the space_raider exc or double click the Space Raider zip file [easiest method 🚀]
 \`\`\`
 
 ## Assets
