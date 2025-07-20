@@ -16,12 +16,12 @@ This is a simple 16-bit-style top-down game made with Python and Pygame. You pla
 - Pygame
 
 ## Run the Game
-\`\`\`bash
-python main.py
+\`\`\`terminal
+python space_raider.py
 \`\`\`
 
 ## Assets
-Sprites created using AI-generated placeholder pixel art.
+Sprites created using AI-generated pixel art.
 
 ## Roadmap
 - Sound effects
